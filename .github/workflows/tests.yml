@@ -55,7 +55,7 @@ jobs:
         run: vendor/bin/phpunit --coverage-clover=coverage.clover
 
       - name: Download ocular.phar
-        run: wget https://scrutinizer-ci.com/ocular.phar
+        run: wget https://github.com/scrutinizer-ci/ocular/releases/download/1.6.0/ocular.phar
 
       - name: Upload coverage to Scrutinizer
         run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
