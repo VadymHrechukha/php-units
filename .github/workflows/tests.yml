@@ -32,3 +32,30 @@ jobs:
 
       - name: PHPUnit
         run: vendor/bin/phpunit
+
+  Coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          coverage: pcov
+          tools: composer:v2
+
+      - name: Composer install
+        run: composer install -n
+
+      - name: PHPUnit with coverage
+        run: vendor/bin/phpunit --coverage-clover=coverage.clover
+
+      - name: Download ocular.phar
+        run: wget https://scrutinizer-ci.com/ocular.phar
+
+      - name: Upload coverage to Scrutinizer
+        run: php ocular.phar code-coverage:upload --format=php-clover coverage.clover
